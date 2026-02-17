@@ -24,8 +24,7 @@ import "./jobs/eventReminderJob.js";
 dotenv.config();
 connectDB();
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmI5ODM2MTA2N2JjYzZmN2M3ZDIyNSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzY4NjU5MjAzLCJleHAiOjE3NjkyNjQwMDN9.ZNODkE2I6St_94oIwT_5X_dw7IsHR9bNUunFOs7ME_8
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmI5NjNlMTA2N2JjYzZmN2M3ZDIxYiIsInJvbGUiOiJob3N0IiwiaWF0IjoxNzY4NjU5ODk2LCJleHAiOjE3NjkyNjQ2OTZ9.QBwWChRbOqsiX9bwRNw4M_3hIlA9vb5ftzadX0x2NjQ
+
 const app = express();
 
 // Security
