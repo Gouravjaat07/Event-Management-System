@@ -43,9 +43,7 @@ const Register = () => {
             toast.success("Registration successful ✅");
             navigate("/");
         } catch (err) {
-            const message =
-            err.response?.data?.message || "Registration failed ❌";
-            toast.error(message);
+            toast.error("Registration Invalid ❌");
         } finally {
             setIsLoading(false);
         }
