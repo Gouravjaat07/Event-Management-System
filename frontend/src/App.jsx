@@ -10,6 +10,7 @@ import Register from "./pages/auth/Register";
 
 import Home from "./pages/common/Home";
 import EventDetails from "./pages/common/EventDetails";
+import About from "./pages/common/About";
 
 import StudentDashboard from "./pages/student/StudentDashboard";
 import HostDashboard from "./pages/host/HostDashboard";
@@ -55,6 +56,8 @@ const App = () => {
           <Toaster position="top-center" />
 
         <Routes>
+          {/* /* -- About Route -- /* */}
+          <Route path="/about"  element={<About />} />
           {/* ── Public Routes ── */}
           <Route path="/" element={<Home />} />
           

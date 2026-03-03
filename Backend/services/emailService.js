@@ -3,8 +3,14 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  connectionTimeout: 10000,
 });
 
 // ─── Base Layout ──────────────────────────────────────────────────────────────
@@ -182,6 +188,7 @@ ${btn("Explore Events Now", "https://svsuevents.vercel.app/events")}
 // 2. NEW EVENT ALERT — notifyNewEvent (sent to all users)
 export const newEventHtml = ({
     userName = "Student",
+    eventId,
     eventTitle = "Event",       eventType,
     eventDate,                  registrationDeadline,
     eventDescription = "",      prizes = "",
@@ -229,7 +236,7 @@ ${coordinatorsBlock(coordinators)}
   <p style="font-size:12px;color:#3b82f6;margin:0;">Registration closes on <strong>${fmtDate(registrationDeadline)}</strong>. Secure your spot now.</p>
 </div>
 
-${btn("Register Now", "https://svsuevents.vercel.app/events")}
+${btn("Register Now", `https://svsueventshub.vercel.app/events/${eventId}`)}
 <p style="text-align:center;font-size:12px;color:#9ca3af;margin-top:16px;">
   View all events at <a href="https://svsuevents.vercel.app/events" style="color:#7c3aed;">svsuevents.vercel.app</a>
 </p>`, `New Event: ${eventTitle} — Register before ${fmtDate(registrationDeadline)}!`);
@@ -290,7 +297,7 @@ ${coordinatorsBlock(coordinators)}
   <p style="font-size:12px;color:#3b82f6;margin:0;">You can view all student registrations from your host dashboard.</p>
 </div>
 
-${btn("View My Event", "https://svsuevents.vercel.app/events")}`, `Your event "${eventTitle}" is now live!`);
+${btn("View My Event", "https://svsueventshub.vercel.app/host")}`, `Your event "${eventTitle}" is now live!`);
 
 
 // 4. HOST EVENT DELETED (by Host) — notifyHostEventDeleted
@@ -319,7 +326,7 @@ export const hostEventDeletedHtml = ({
   <p style="font-size:12px;color:#16a34a;margin:0;">Create a new event on EventHub and reach hundreds of students instantly.</p>
 </div>
 
-${btn("Create a New Event", "https://svsuevents.vercel.app/events/create")}`, `Event "${eventTitle}" has been deleted.`);
+${btn("Create a New Event", "https://svsueventshub.vercel.app/host/create")}`, `Event "${eventTitle}" has been deleted.`);
 
 
 // 5. REGISTRATION CONFIRMATION — notifyRegistration
@@ -393,9 +400,9 @@ ${coordinatorsBlock(coordinators)}
   <p style="font-size:12px;color:#3b82f6;margin:0;">The event is on <strong>${fmtDate(eventDate)}</strong>. Bring this email as your proof of registration.</p>
 </div>
 
-${btn("View My Registration", "https://svsuevents.vercel.app/my-registrations")}
+${btn("View My Registration", "https://svsueventshub.vercel.app/student")}
 <p style="text-align:center;font-size:12px;color:#9ca3af;margin-top:16px;">
-  Want to cancel? <a href="https://svsuevents.vercel.app/my-registrations" style="color:#7c3aed;">Manage registrations</a>
+  Want to cancel? <a href="https://svsueventshub.vercel.app/student" style="color:#7c3aed;">Manage registrations</a>
 </p>`, `Registered for ${eventTitle}!`);
 
 
@@ -431,7 +438,7 @@ ${bannerBlock(banner)}
   <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">
     You can re-register as long as the deadline hasn't passed. There are also plenty of other exciting events waiting for you!
   </p>
-  ${btn("Browse All Events", "https://svsuevents.vercel.app/events")}
+  ${btn("Browse All Events", "https://svsueventshub.vercel.app")}
 </div>`, `Registration cancelled for ${eventTitle}`);
 
 
@@ -477,7 +484,7 @@ ${bannerBlock(banner)}
 </div>
 
 ${btn("Contact Admin", "https://svsuevents.vercel.app/contact")}
-${btn("Create New Event", "https://svsuevents.vercel.app/events/create")}`, `Admin Action: "${eventTitle}" has been removed`);
+${btn("Create New Event", "https://svsueventshub.vercel.app/host/create")}`, `Admin Action: "${eventTitle}" has been removed`);
 
 
 // ══════════════════════════════════════════════════════════════════════════════

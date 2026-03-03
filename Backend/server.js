@@ -18,6 +18,7 @@ import certificateRoutes from "./routes/certificateRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import errorHandler from "./middleware/errorMiddleware.js";
+import feedbackRoutes from "./routes/feedbackRoutes.js";
 import { dot } from "node:test/reporters";
 import "./jobs/eventReminderJob.js";
 
@@ -26,6 +27,8 @@ connectDB();
 
 
 const app = express();
+
+app.set("trust proxy", 1);
 
 // Security
 app.use(helmet());
@@ -53,6 +56,7 @@ app.use("/api/register", registrationRoutes);
 app.use("/api/certificate", certificateRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 // Error Handler
 app.use(errorHandler);

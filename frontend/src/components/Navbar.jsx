@@ -19,13 +19,14 @@ import {
   Sun,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  Info
 } from 'lucide-react';
 import svsuLogo from "../assets/svsu_logo.png";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  const { darkMode, toggleDarkMode } = useTheme(); // ✅ Using global theme context
+  const { darkMode, toggleDarkMode } = useTheme();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen]           = useState(false);
   const dropdownRef = useRef(null);
@@ -45,16 +46,14 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  // ✅ Your logout() already clears localStorage AND updates state perfectly!
   const handleLogout = () => {
     setProfileDropdownOpen(false);
     setMobileMenuOpen(false);
-    logout(); // Uses your AuthContext logout - clears storage + updates state
+    logout();
     navigate('/', { replace: true });
   };
 
@@ -118,7 +117,6 @@ const Navbar = () => {
             whileHover={{ scale:1.02 }}
             whileTap={{ scale:0.98 }}
           >
-            {/* logo box */}
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 flex-shrink-0">
               <div className="w-full h-full rounded-lg md:rounded-xl bg-gradient-to-br from-[#FF8040] to-[#0046FF] p-0.5 shadow-lg">
                 <div className="w-full h-full rounded-md md:rounded-lg bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden p-0.5 md:p-1">
@@ -126,7 +124,6 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-            {/* text */}
             <div>
               <h1 className="text-sm sm:text-base md:text-lg lg:text-xl font-black bg-gradient-to-r from-[#FF8040] via-[#0046FF] to-[#001BB7] bg-clip-text text-transparent leading-tight">
                 SVSU Events
@@ -145,6 +142,26 @@ const Navbar = () => {
                   className="flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-lg lg:rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all font-semibold text-sm">
                   <Home className="w-4 h-4" /><span>Home</span>
                 </motion.button>
+
+                {/* About Us — logged out */}
+                <motion.button
+                  onClick={() => navigate('/about')}
+                  whileHover={{ scale:1.02 }}
+                  whileTap={{ scale:0.98 }}
+                  className="relative flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-lg lg:rounded-xl font-semibold text-sm overflow-hidden group
+                    bg-gradient-to-r from-[#FF8040]/10 to-[#0046FF]/10
+                    hover:from-[#FF8040]/20 hover:to-[#0046FF]/20
+                    text-transparent bg-clip-text
+                    dark:from-[#FF8040]/15 dark:to-[#0046FF]/15
+                    dark:hover:from-[#FF8040]/25 dark:hover:to-[#0046FF]/25
+                    transition-all border border-transparent hover:border-[#0046FF]/20 dark:hover:border-[#FF8040]/20"
+                >
+                  <Info className="w-4 h-4 flex-shrink-0 text-[#FF8040] group-hover:text-[#0046FF] transition-colors duration-300" />
+                  <span className="bg-gradient-to-r from-[#FF8040] to-[#0046FF] bg-clip-text text-transparent font-bold">
+                    About Us
+                  </span>
+                </motion.button>
+
                 <motion.button onClick={() => navigate('/login')} whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }}
                   className="px-4 lg:px-5 py-2 rounded-lg lg:rounded-xl border-2 border-[#0046FF] text-[#0046FF] hover:bg-[#0046FF]/5 dark:hover:bg-[#0046FF]/10 transition-all font-bold text-sm">
                   Login
@@ -156,6 +173,26 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                {/* About Us — logged in (left of Events) */}
+                <motion.button
+                  onClick={() => navigate('/about')}
+                  whileHover={{ scale:1.02 }}
+                  whileTap={{ scale:0.98 }}
+                  className="relative flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-lg lg:rounded-xl font-semibold text-sm group
+                    border border-[#FF8040]/30 dark:border-[#FF8040]/20
+                    hover:border-[#0046FF]/40 dark:hover:border-[#0046FF]/40
+                    bg-gradient-to-r from-[#FF8040]/8 to-[#0046FF]/8
+                    hover:from-[#FF8040]/15 hover:to-[#0046FF]/15
+                    dark:from-[#FF8040]/10 dark:to-[#0046FF]/10
+                    dark:hover:from-[#FF8040]/20 dark:hover:to-[#0046FF]/20
+                    transition-all duration-200"
+                >
+                  <Info className="w-4 h-4 flex-shrink-0 text-[#FF8040] group-hover:text-[#0046FF] transition-colors duration-300" />
+                  <span className="bg-gradient-to-r from-[#FF8040] to-[#0046FF] bg-clip-text text-transparent font-bold">
+                    About Us
+                  </span>
+                </motion.button>
+
                 {/* Events link */}
                 <motion.button onClick={() => navigate('/')} whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }}
                   className="flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-lg lg:rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all font-semibold text-sm">
@@ -186,11 +223,9 @@ const Navbar = () => {
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); setProfileDropdownOpen(!profileDropdownOpen); }}
                     className="flex items-center gap-2 px-2 lg:px-3 py-1.5 lg:py-2 rounded-lg lg:rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all border-2 border-transparent hover:border-slate-200 dark:hover:border-slate-700"
                   >
-                    {/* avatar */}
                     <div className={`w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-gradient-to-br ${getRoleColor()} flex items-center justify-center text-white font-bold text-xs lg:text-sm shadow-lg`}>
                       {getInitials(user?.name)}
                     </div>
-                    {/* name+role — only on lg */}
                     <div className="hidden lg:block text-left">
                       <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight">
                         {user?.name || 'User'}
@@ -274,14 +309,12 @@ const Navbar = () => {
 
           {/* ── Mobile controls ── */}
           <div className="md:hidden flex items-center gap-1.5">
-            {/* dark mode toggle always visible on mobile */}
             <motion.button whileHover={{ scale:1.05 }} whileTap={{ scale:0.95 }} onClick={toggleDarkMode}
               className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
               {darkMode
                 ? <Sun  className="w-4 h-4 text-[#FF8040]" />
                 : <Moon className="w-4 h-4 text-[#001BB7]" />}
             </motion.button>
-            {/* hamburger */}
             <motion.button whileTap={{ scale:0.95 }} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
               {mobileMenuOpen
@@ -308,6 +341,19 @@ const Navbar = () => {
                       className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold text-sm transition-colors">
                       <Home className="w-4 h-4 flex-shrink-0" /><span>Home</span>
                     </button>
+
+                    {/* About Us — mobile logged out */}
+                    <button onClick={() => { setMobileMenuOpen(false); navigate('/about'); }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-bold text-sm transition-colors
+                        bg-gradient-to-r from-[#FF8040]/10 to-[#0046FF]/10
+                        hover:from-[#FF8040]/20 hover:to-[#0046FF]/20
+                        dark:from-[#FF8040]/15 dark:to-[#0046FF]/15
+                        dark:hover:from-[#FF8040]/25 dark:hover:to-[#0046FF]/25
+                        border border-[#FF8040]/20 hover:border-[#0046FF]/30">
+                      <Info className="w-4 h-4 flex-shrink-0 text-[#FF8040]" />
+                      <span className="bg-gradient-to-r from-[#FF8040] to-[#0046FF] bg-clip-text text-transparent">About Us</span>
+                    </button>
+
                     <button onClick={() => { setMobileMenuOpen(false); navigate('/login'); }}
                       className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-[#0046FF] text-[#0046FF] font-bold text-sm transition-colors hover:bg-[#0046FF]/5">
                       Login
@@ -331,6 +377,18 @@ const Navbar = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* About Us — mobile logged in (above All Events) */}
+                    <button onClick={() => { setMobileMenuOpen(false); navigate('/about'); }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-bold text-sm transition-colors
+                        bg-gradient-to-r from-[#FF8040]/10 to-[#0046FF]/10
+                        hover:from-[#FF8040]/20 hover:to-[#0046FF]/20
+                        dark:from-[#FF8040]/15 dark:to-[#0046FF]/15
+                        dark:hover:from-[#FF8040]/25 dark:hover:to-[#0046FF]/25
+                        border border-[#FF8040]/20 hover:border-[#0046FF]/30">
+                      <Info className="w-4 h-4 flex-shrink-0 text-[#FF8040]" />
+                      <span className="bg-gradient-to-r from-[#FF8040] to-[#0046FF] bg-clip-text text-transparent">About Us</span>
+                    </button>
 
                     <button onClick={() => { setMobileMenuOpen(false); navigate('/'); }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold text-sm transition-colors">
