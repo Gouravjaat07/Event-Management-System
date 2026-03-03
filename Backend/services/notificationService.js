@@ -45,16 +45,20 @@ const regData = (reg) => ({
 export const notifyNewEvent = async (event) => {
     const users = await User.find({ email: { $exists: true, $ne: null } });
 
-    for (const user of users) {
-        await sendEmail({
+    const emailPromises = users.map(user =>
+        sendEmail({
             to: user.email,
             subject: `🎉 New Event: ${event.title} — Register Now!`,
             html: newEventHtml({
                 userName: user.name,
                 ...eventData(event),
             }),
-        }).catch((err) => console.error(`Failed to notify ${user.email}:`, err));
-    }
+        }).catch(err =>
+            console.error(`Failed to notify ${user.email}:`, err)
+        )
+    );
+
+    await Promise.all(emailPromises);
 };
 
 
