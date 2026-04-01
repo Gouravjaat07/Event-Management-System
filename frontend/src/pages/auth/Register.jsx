@@ -207,7 +207,7 @@ const Register = () => {
           transition={{ duration: 0.45, ease: "easeOut" }}
           className="
             relative z-10 w-full
-            max-w-[340px]
+            max-w-[390px]
             sm:max-w-[420px]
             md:max-w-[460px]
             lg:max-w-[500px]
