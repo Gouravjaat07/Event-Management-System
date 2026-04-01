@@ -210,7 +210,7 @@ const MyRegistrations = ({ onRegistrationChange }) => {
                 {regs.map((r, index) => {
                     if (!r.eventId) return null;
                     const deadlinePassed = new Date() > new Date(r.eventId.registrationDeadline);
-                    const isTeam        = r.eventId.participationType === "Team";
+                    const isTeam = r.eventId.participationType === "Team";
 
                     return (
                         <motion.div
