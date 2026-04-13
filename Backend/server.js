@@ -32,7 +32,13 @@ app.set("trust proxy", 1);
 
 // Security
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://svsueventshub.vercel.app"
+  ],
+  credentials: true,
+}));
 app.use(compression());
 
 // Rate Limit
