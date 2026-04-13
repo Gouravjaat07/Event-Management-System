@@ -11,9 +11,7 @@ import {
 } from 'lucide-react';
 import svsuLogo from "../assets/svsu_logo.png";
 
-/* ─── Inject dropdown CSS once ─────────────────────────────────────────────
-   Using pure CSS transitions instead of Framer Motion for the dropdown
-   eliminates JS animation overhead and makes open/close feel instant.       */
+
 const DROPDOWN_CSS = `
   .nav-dropdown {
     position: absolute;
