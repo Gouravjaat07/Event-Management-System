@@ -35,7 +35,9 @@ app.use(helmet());
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://svsueventshub.vercel.app"
+    "https://svsueventshub.vercel.app",
+    "https://svsuevents.in",
+    "https://www.svsuevents.in",
   ],
   credentials: true,
 }));
