@@ -125,13 +125,13 @@ const Register = () => {
       description: "Attend & discover events",
       grad: "from-[#0046FF] to-[#001BB7]",
     },
-    {
-      value: "host",
-      label: "Event Host",
-      icon: Users,
-      description: "Create & manage events",
-      grad: "from-[#FF8040] to-[#0046FF]",
-    },
+    // {
+    //   value: "host",
+    //   label: "Event Host",
+    //   icon: Users,
+    //   description: "Create & manage events",
+    //   grad: "from-[#FF8040] to-[#0046FF]",
+    // },
   ];
 
   /* Shared input class */
