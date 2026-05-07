@@ -10,6 +10,13 @@ import {
     adminDeletedEventHtml,
 } from "./emailService.js";
 
+// Helper function
+const isValidEmail = (email) => {
+    return typeof email === "string" &&
+           email.includes("@") &&
+           email.includes(".");
+};
+
 // ─── Helper: map event doc → template-ready object ───────────────────────────
 const eventData = (event) => ({
     eventTitle:           event.title,
@@ -42,23 +49,69 @@ const regData = (reg) => ({
    1️⃣  Notify ALL users — new event just created
    Called from: eventController.createEvent
    ============================================================ */
+// export const notifyNewEvent = async (event) => {
+//     const users = await User.find({ email: { $exists: true, $ne: null } });
+
+//     const emailPromises = users
+//     .filter(user => isValidEmail(user.email))
+//     .map(user =>
+//         sendEmail({
+//             to: user.email,
+//             subject: `New Event Available: ${event.title} — Register Now!`,
+//             html: newEventHtml({
+//                 userName: user.name,
+//                 ...eventData(event),
+//             }),
+//         }).catch(err =>
+//             console.error(`Failed to notify ${user.email}:`, err)
+//         )
+//     );
+
+//     await Promise.all(emailPromises);
+// };
+
 export const notifyNewEvent = async (event) => {
-    const users = await User.find({ email: { $exists: true, $ne: null } });
 
-    const emailPromises = users.map(user =>
-        sendEmail({
-            to: user.email,
-            subject: `🎉 New Event: ${event.title} — Register Now!`,
-            html: newEventHtml({
-                userName: user.name,
-                ...eventData(event),
-            }),
-        }).catch(err =>
-            console.error(`Failed to notify ${user.email}:`, err)
-        )
-    );
+    const users = await User.find({
+        email: { $exists: true, $ne: null }
+    });
 
-    await Promise.all(emailPromises);
+    // ✅ delay helper
+    const delay = (ms) =>
+        new Promise(resolve => setTimeout(resolve, ms));
+
+    for (const user of users) {
+
+        // ✅ skip invalid emails
+        if (!isValidEmail(user.email)) {
+            console.log(`Invalid email skipped: ${user.email}`);
+            continue;
+        }
+
+        try {
+
+            await sendEmail({
+                to: user.email,
+                subject: `New Event Available: ${event.title}`,
+                html: newEventHtml({
+                    userName: user.name,
+                    ...eventData(event),
+                }),
+            });
+
+            console.log(`✅ Email sent to ${user.email}`);
+
+            // ✅ 2 second delay
+            await delay(2000);
+
+        } catch (err) {
+
+            console.error(
+                `❌ Failed to notify ${user.email}:`,
+                err.message
+            );
+        }
+    }
 };
 
 

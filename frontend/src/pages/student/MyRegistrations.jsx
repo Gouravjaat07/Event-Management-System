@@ -23,6 +23,11 @@ import {
     Building2,
     BookOpen,
     Tag,
+    FileCode,
+    FolderKanban,
+    Link2,
+    GraduationCap,
+    Hash,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -111,7 +116,7 @@ const MyRegistrations = ({ onRegistrationChange }) => {
     const [darkMode, setDarkMode] = useState(false);
     const { user }  = useAuth();
     const [regs, setRegs]       = useState([]);
-    const [editing, setEditing] = useState(null);   // the full reg object being edited
+    const [editing, setEditing] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const fetchRegs = async () => {
@@ -149,7 +154,7 @@ const MyRegistrations = ({ onRegistrationChange }) => {
             toast.success("Registration deleted");
 
             if (onRegistrationChange) {
-                onRegistrationChange();   // 👈 refresh dashboard stats
+                onRegistrationChange();
             }
         } catch {
             toast.error("Failed to delete registration");
@@ -263,35 +268,187 @@ const MyRegistrations = ({ onRegistrationChange }) => {
                             {/* ── detail tiles ── */}
                             <div className="p-3 md:p-4 lg:p-6">
                                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-2.5 lg:gap-3 mb-3 md:mb-4">
+
+                                    {/* ── STEP 2: Solo/Team section ── */}
                                     {isTeam ? (
                                         <>
-                                            <InfoTile icon={Users}    label="Team Name" value={r.teamName}
-                                                iconColor="text-[#FF8040]" bgClass="bg-[#FF8040]/10 dark:bg-[#FF8040]/20" borderClass="border-[#FF8040]/25" />
-                                            <InfoTile icon={User}     label="Members"   value={r.teamMembers?.join(", ") || "N/A"}
-                                                iconColor="text-[#0046FF]" bgClass="bg-[#0046FF]/10 dark:bg-[#0046FF]/20" borderClass="border-[#0046FF]/25" />
+                                            <InfoTile
+                                                icon={Users}
+                                                label="Team Name"
+                                                value={r.teamName || "N/A"}
+                                                iconColor="text-[#FF8040]"
+                                                bgClass="bg-[#FF8040]/10 dark:bg-[#FF8040]/20"
+                                                borderClass="border-[#FF8040]/25"
+                                            />
+                                            <InfoTile
+                                                icon={User}
+                                                label="Leader Name"
+                                                value={r.name || "N/A"}
+                                                iconColor="text-[#0046FF]"
+                                                bgClass="bg-[#0046FF]/10 dark:bg-[#0046FF]/20"
+                                                borderClass="border-[#0046FF]/25"
+                                            />
+                                            <InfoTile
+                                                icon={Hash}
+                                                label="Roll No"
+                                                value={r.rollNo || "N/A"}
+                                                iconColor="text-pink-600 dark:text-pink-400"
+                                                bgClass="bg-pink-50 dark:bg-pink-900/20"
+                                                borderClass="border-pink-200 dark:border-pink-800"
+                                            />
+                                            <InfoTile
+                                                icon={GraduationCap}
+                                                label="Course"
+                                                value={r.department || "N/A"}
+                                                iconColor="text-cyan-600 dark:text-cyan-400"
+                                                bgClass="bg-cyan-50 dark:bg-cyan-900/20"
+                                                borderClass="border-cyan-200 dark:border-cyan-800"
+                                            />
                                         </>
                                     ) : (
                                         <>
-                                            <InfoTile icon={User}     label="Name"       value={r.name}
-                                                iconColor="text-[#FF8040]" bgClass="bg-[#FF8040]/10 dark:bg-[#FF8040]/20" borderClass="border-[#FF8040]/25" />
-                                            <InfoTile icon={Tag}      label="College ID" value={r.collegeId || "N/A"}
-                                                iconColor="text-[#0046FF]" bgClass="bg-[#0046FF]/10 dark:bg-[#0046FF]/20" borderClass="border-[#0046FF]/25" />
+                                            <InfoTile
+                                                icon={User}
+                                                label="Name"
+                                                value={r.name || "N/A"}
+                                                iconColor="text-[#FF8040]"
+                                                bgClass="bg-[#FF8040]/10 dark:bg-[#FF8040]/20"
+                                                borderClass="border-[#FF8040]/25"
+                                            />
+                                            <InfoTile
+                                                icon={Hash}
+                                                label="Roll No"
+                                                value={r.rollNo || "N/A"}
+                                                iconColor="text-pink-600 dark:text-pink-400"
+                                                bgClass="bg-pink-50 dark:bg-pink-900/20"
+                                                borderClass="border-pink-200 dark:border-pink-800"
+                                            />
+                                            <InfoTile
+                                                icon={GraduationCap}
+                                                label="Course"
+                                                value={r.department || "N/A"}
+                                                iconColor="text-cyan-600 dark:text-cyan-400"
+                                                bgClass="bg-cyan-50 dark:bg-cyan-900/20"
+                                                borderClass="border-cyan-200 dark:border-cyan-800"
+                                            />
+                                            <InfoTile
+                                                icon={Tag}
+                                                label="College ID"
+                                                value={r.collegeId || "N/A"}
+                                                iconColor="text-[#0046FF]"
+                                                bgClass="bg-[#0046FF]/10 dark:bg-[#0046FF]/20"
+                                                borderClass="border-[#0046FF]/25"
+                                            />
                                         </>
                                     )}
-                                    <InfoTile icon={Mail}      label="Email"         value={r.email}
-                                        iconColor="text-green-600 dark:text-green-400" bgClass="bg-green-50 dark:bg-green-900/20" borderClass="border-green-200 dark:border-green-800" />
-                                    <InfoTile icon={Phone}     label="Contact"       value={r.contact}
-                                        iconColor="text-orange-600 dark:text-orange-400" bgClass="bg-orange-50 dark:bg-orange-900/20" borderClass="border-orange-200 dark:border-orange-800" />
-                                    <InfoTile icon={Building2} label="College"       value={r.collegeName}
-                                        iconColor="text-[#001BB7]" bgClass="bg-[#001BB7]/10 dark:bg-[#001BB7]/20" borderClass="border-[#001BB7]/25" />
-                                    <InfoTile icon={BookOpen}  label="Course & Year" value={`${r.course} — ${r.year}`}
-                                        iconColor="text-violet-600 dark:text-violet-400" bgClass="bg-violet-50 dark:bg-violet-900/20" borderClass="border-violet-200 dark:border-violet-800" />
+
+                                    {/* ── Common fields ── */}
+                                    <InfoTile
+                                        icon={Mail}
+                                        label="Email"
+                                        value={r.email}
+                                        iconColor="text-green-600 dark:text-green-400"
+                                        bgClass="bg-green-50 dark:bg-green-900/20"
+                                        borderClass="border-green-200 dark:border-green-800"
+                                    />
+                                    <InfoTile
+                                        icon={Phone}
+                                        label="Contact"
+                                        value={r.contact}
+                                        iconColor="text-orange-600 dark:text-orange-400"
+                                        bgClass="bg-orange-50 dark:bg-orange-900/20"
+                                        borderClass="border-orange-200 dark:border-orange-800"
+                                    />
+                                    <InfoTile
+                                        icon={Building2}
+                                        label="College"
+                                        value={r.collegeName}
+                                        iconColor="text-[#001BB7]"
+                                        bgClass="bg-[#001BB7]/10 dark:bg-[#001BB7]/20"
+                                        borderClass="border-[#001BB7]/25"
+                                    />
+                                    <InfoTile
+                                        icon={BookOpen}
+                                        label="Course & Year"
+                                        value={`${r.course} — ${r.year}`}
+                                        iconColor="text-violet-600 dark:text-violet-400"
+                                        bgClass="bg-violet-50 dark:bg-violet-900/20"
+                                        borderClass="border-violet-200 dark:border-violet-800"
+                                    />
+
+                                    {/* ── STEP 3: Project fields ── */}
+                                    <InfoTile
+                                        icon={FolderKanban}
+                                        label="Project Name"
+                                        value={r.projectName || "N/A"}
+                                        iconColor="text-yellow-600 dark:text-yellow-400"
+                                        bgClass="bg-yellow-50 dark:bg-yellow-900/20"
+                                        borderClass="border-yellow-200 dark:border-yellow-800"
+                                    />
+                                    <InfoTile
+                                        icon={FileCode}
+                                        label="Project Description"
+                                        value={r.projectDescription || "N/A"}
+                                        iconColor="text-indigo-600 dark:text-indigo-400"
+                                        bgClass="bg-indigo-50 dark:bg-indigo-900/20"
+                                        borderClass="border-indigo-200 dark:border-indigo-800"
+                                    />
+                                    <InfoTile
+                                        icon={Link2}
+                                        label="Prototype Link"
+                                        value={r.prototypeLink || "N/A"}
+                                        iconColor="text-emerald-600 dark:text-emerald-400"
+                                        bgClass="bg-emerald-50 dark:bg-emerald-900/20"
+                                        borderClass="border-emerald-200 dark:border-emerald-800"
+                                    />
                                 </div>
+
+                                {/* ── STEP 4: Team Members Full Details ── */}
+                                {isTeam && r.teamMembers?.length > 0 && (
+                                    <div className="mt-4 space-y-3">
+                                        <h4 className="text-sm md:text-base font-bold text-gray-900 dark:text-white">
+                                            Team Members Details
+                                        </h4>
+
+                                        {r.teamMembers.map((member, idx) => (
+                                            <div
+                                                key={idx}
+                                                className="p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900"
+                                            >
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                                    <InfoTile
+                                                        icon={User}
+                                                        label="Member Name"
+                                                        value={member.name || "N/A"}
+                                                        iconColor="text-[#FF8040]"
+                                                        bgClass="bg-[#FF8040]/10 dark:bg-[#FF8040]/20"
+                                                        borderClass="border-[#FF8040]/25"
+                                                    />
+                                                    <InfoTile
+                                                        icon={Hash}
+                                                        label="Roll No"
+                                                        value={member.rollNo || "N/A"}
+                                                        iconColor="text-pink-600 dark:text-pink-400"
+                                                        bgClass="bg-pink-50 dark:bg-pink-900/20"
+                                                        borderClass="border-pink-200 dark:border-pink-800"
+                                                    />
+                                                    <InfoTile
+                                                        icon={GraduationCap}
+                                                        label="Department"
+                                                        value={member.department || "N/A"}
+                                                        iconColor="text-cyan-600 dark:text-cyan-400"
+                                                        bgClass="bg-cyan-50 dark:bg-cyan-900/20"
+                                                        borderClass="border-cyan-200 dark:border-cyan-800"
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
 
                                 {/* ── action buttons ── */}
                                 {!deadlinePassed ? (
-                                    <div className="flex gap-2 md:gap-3 pt-3 md:pt-4 border-t border-gray-200 dark:border-gray-700">
-                                        {/* Edit button */}
+                                    <div className="flex gap-2 md:gap-3 pt-3 md:pt-4 border-t border-gray-200 dark:border-gray-700 mt-3 md:mt-4">
                                         <motion.button
                                             whileHover={{ scale: 1.03 }}
                                             whileTap={{ scale: 0.97 }}
@@ -302,7 +459,6 @@ const MyRegistrations = ({ onRegistrationChange }) => {
                                             <span>Edit</span>
                                         </motion.button>
 
-                                        {/* Delete button */}
                                         <motion.button
                                             whileHover={{ scale: 1.03 }}
                                             whileTap={{ scale: 0.97 }}
@@ -314,7 +470,7 @@ const MyRegistrations = ({ onRegistrationChange }) => {
                                         </motion.button>
                                     </div>
                                 ) : (
-                                    <div className="pt-3 md:pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <div className="pt-3 md:pt-4 border-t border-gray-200 dark:border-gray-700 mt-3 md:mt-4">
                                         <div className="flex items-start gap-2 md:gap-3 p-2.5 md:p-3 lg:p-4 rounded-lg md:rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
                                             <AlertCircle className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-5 lg:h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                                             <p className="text-[10px] md:text-xs lg:text-sm font-semibold text-red-900 dark:text-red-100">
@@ -329,7 +485,7 @@ const MyRegistrations = ({ onRegistrationChange }) => {
                 })}
             </div>
 
-            {/* ── Edit modal (bottom-sheet on mobile, centered on desktop) ── */}
+            {/* ── Edit modal ── */}
             <EditModal
                 reg={editing}
                 onSubmit={handleUpdate}

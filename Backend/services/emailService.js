@@ -3,9 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false,
+  service: "gmail",   // ✅ IMPORTANT
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -47,7 +45,7 @@ const base = (content, preview = "") => `<!DOCTYPE html>
     &copy; ${new Date().getFullYear()} EventHub &mdash;
     <a href="https://svsuevents.vercel.app" style="color:#a78bfa;text-decoration:none;">svsuevents.vercel.app</a>
     &nbsp;&middot;&nbsp;
-    <a href="https://svsuevents.vercel.app/unsubscribe" style="color:#6d28d9;text-decoration:none;">Unsubscribe</a>
+    <a href="https://svsuevents.vercel.app" style="color:#6d28d9;text-decoration:none;">Unsubscribe</a>
   </p>
 </td></tr>
 

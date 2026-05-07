@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema(
             default: "student",
         },
         department: String,
+
+        contact: {
+            type: String,
+        },
     },
     { timestamps: true }
 );

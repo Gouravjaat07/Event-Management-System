@@ -17,15 +17,59 @@ const registrationSchema = new mongoose.Schema(
         },
         // 🔹 Team fields
         teamName: String,
-        teamMembers: [String],
+        teamMembers: [
+            {
+                name: {
+                type: String,
+                required: true,
+                },
+
+                rollNo: {
+                type: String,
+                required: true,
+                },
+
+                course: {
+                type: String,
+                required: true,
+                },
+            },
+        ],
+
 
         // 🔹 Solo fields
         name: String,
         collegeId: String,
-        email: String,
-        contact: String,
+        email: {
+            type: String,
+            required: true,
+        },
+        contact: {
+            type: String,
+            required: true,
+        },
+        rollNo: {
+            type: String,
+        },
+        department: {
+            type: String,
+        },
 
         // 🔹 Common college fields
+        projectName: {
+            type: String,
+            required: true,
+        },
+
+        projectDescription: {
+            type: String,
+            required: true,
+        },
+
+        prototypeLink: {
+            type: String,
+            required: true,
+        },
         collegeName: {
             type: String,
             required: true,
@@ -38,6 +82,7 @@ const registrationSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+
     },
     {timestamps: true}
 );

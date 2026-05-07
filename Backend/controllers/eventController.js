@@ -157,6 +157,10 @@ export const deleteEvent = asyncHandler(async (req, res) => {
 
     const host = await User.findById(deletedEvent.hostId);
 
+    if(!host?.email) {
+        await notifyHostEventDeleted(host, deletedEvent.title);
+    }
+
     await notifyHostEventDeleted(host, deletedEvent.title);
     await deletedEvent.deleteOne();
 

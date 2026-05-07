@@ -89,28 +89,68 @@ export const exportToPDF = (registrations, eventTitle) => {
 
     const tableData = registrations.map((r, i) => [
         i + 1,
-        // 🔹 Event
+
+        // Event
         r.eventId?.title || eventTitle,
 
-        // 🔹 SOLO fields (fallback to userId if needed)
+        // Basic Info
         r.name || r.userId?.name || "",
-        r.collegeId || r.userId?.collegeId || "",
+        r.collegeId || "",
+
+        // Academic Info
+        r.rollNo || "",
+        r.department || "",
         r.course || "",
         r.year || "",
         r.collegeName || "",
 
-        // 🔹 COMMON college fields
+        // Contact
         r.contact || "",
-        r.email || r.userId?.email || "",
+        r.email || "",
 
-        // 🔹 TEAM fields
+        // Team
         r.teamName || "Solo",
-        r.teamMembers?.join(", ") || "",
+
+        r.teamMembers?.length
+            ? r.teamMembers
+                .map(
+                    (m) =>
+                        `${m.name} (${m.rollNo} - ${m.course})`
+                )
+                .join(", ")
+            : "Solo",
+
+        // Project
+        r.projectName || "",
+        r.projectDescription || "",
+        r.prototypeLink || "",
     ]);
 
     // Autotable func call
     autoTable(doc, {
-        head: [["S. No.", "Event Name", "Name", "College ID", "Course Name", "Year", "College Name", "Contact", "Email", "Team Name", "Team Members"]],
+        head: [[
+        "S.No",
+        "Event Name",
+
+        "Name",
+        "College ID",
+
+        "Roll No",
+        "Department",
+        "Course",
+        "Year",
+        "College Name",
+
+        "Contact",
+        "Email",
+
+        "Team Name",
+        "Team Members",
+
+        "Project Name",
+        "Project Description",
+        "Prototype Link",
+    ]],
         body: tableData,
         startY: 20,
     });

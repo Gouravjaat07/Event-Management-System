@@ -26,6 +26,7 @@ export const updateMyProfile = asyncHandler(async (req, res) => {
   // ✅ Editable fields only
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
+  user.contact = req.body.contact || user.contact;
 
   // Password change
   if (req.body.password) {
@@ -41,6 +42,7 @@ export const updateMyProfile = asyncHandler(async (req, res) => {
     email: user.email,
     role: user.role,
     collegeId: user.collegeId,
+    contact: user.contact,
   });
 });
 

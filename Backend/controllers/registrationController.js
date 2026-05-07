@@ -31,11 +31,18 @@ export const registerForEvent = asyncHandler(async (req, res) => {
         teamName: req.body.teamName,
         teamMembers: req.body.teamMembers,
 
+        rollNo: req.body.rollNo,
+        department: req.body.department,
+
+        projectName: req.body.projectName,
+        projectDescription: req.body.projectDescription,
+        prototypeLink: req.body.prototypeLink,
+
         // Solo
-        name: user.name,
-        collegeId: user.collegeId,
-        email: user.email,
-        contact: user.contact,
+        name: req.body.name || user.name,
+        collegeId: req.body.collegeId || user.collegeId,
+        email: req.body.email,
+        contact: req.body.contact,
 
         // Common
         collegeName: req.body.collegeName,
@@ -54,7 +61,7 @@ export const getRegistrationsByEvent = asyncHandler(async (req, res) => {
     const registrations = await Registration.find({
         eventId: req.params.eventId,
     }) // Change
-    .populate("userId", "name email collegeId")
+    .populate("userId", "name email collegeId contact")
     .populate("eventId", "title registrationDeadline");
 
     res.json(registrations);
@@ -96,9 +103,21 @@ export const updateRegistration = asyncHandler(async (req, res) => {
     registration.email = req.body.email;
     registration.contact = req.body.contact;
 
+    registration.rollNo = req.body.rollNo;
+    registration.department = req.body.department;
+
+    registration.projectName = req.body.projectName;
+    registration.projectDescription = req.body.projectDescription;
+    registration.prototypeLink = req.body.prototypeLink;
+
     registration.collegeName = req.body.collegeName;
     registration.course = req.body.course;
     registration.year = req.body.year;
+
+    if (!req.body.email || !req.body.contact) {
+        res.status(400);
+        throw new Error("Email and Contact are required");
+    }
 
     const updated = await registration.save();
     res.json(updated);
