@@ -465,7 +465,7 @@ const RegistrationForm = ({ event, onSubmit, onClose, initialData }) => {
 
                 {/* Prototype Link */}
                 <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.56 }}>
-                    <label className={labelClass}>Prototype Link <span className="text-red-500">*</span></label>
+                    <label className={labelClass}>Prototype or Video Explanation Link <span className="text-red-500">*</span></label>
                     <div className="relative group">
                         <div className={iconSlot}><Link className="w-4 h-4 text-gray-400 group-focus-within:text-[#001BB7] transition-colors" /></div>
                         <input type="url" placeholder="https://drive.google.com/..." value={prototypeLink}
