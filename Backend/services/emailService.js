@@ -503,7 +503,7 @@ ${btn("Contact Admin Team", `${SITE_URL}/contact`)}
 export const sendEmail = async ({ to, subject, text, html }) => {
   if (!to) return;
   await transporter.sendMail({
-    from: `"SVSU Events Hub" <${process.env.MAIL_FROM}>`,
+    from: `SVSU Events Hub <${process.env.MAIL_FROM}>`,
     to,
     subject,
     text: text || subject,
