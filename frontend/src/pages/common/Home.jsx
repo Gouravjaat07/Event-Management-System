@@ -4,12 +4,12 @@ import {
   Search, Filter, Calendar, Sparkles, ChevronRight,
   TrendingUp, Award, Heart, Github, Twitter,
   Linkedin, Mail, Zap, Target, BookOpen, Star, Trophy,
-  LogIn, UserPlus, Lock, X, AlertCircle, RefreshCw, Code2
+  LogIn, UserPlus, Lock, X, AlertCircle, RefreshCw, Code2, Youtube
 } from 'lucide-react';
 import { getAllEvents } from "../../services/eventService";
 import EventCard from "../../components/EventCard";
 import Navbar from "../../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { href, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { getUsersCount } from "../../services/userService";
@@ -684,15 +684,24 @@ const Home = () => {
             {/* Heading */}
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 sm:px-4">
               <span className="bg-gradient-to-r from-[#FF8040] via-[#0046FF] to-[#001BB7] bg-clip-text text-transparent">
-                Campus Event Hub
+                SVSU Events Hub
+              </span>
+              {/* Hidden SEO text — Google reads this, user nahi dekhta */}
+              <span className="sr-only">
+                Shri Vishwakarma Skill University Official Event Portal — Workshops, Hackathons & Tech Fests
               </span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl text-slate-700 dark:text-slate-300 max-w-xs sm:max-w-2xl md:max-w-4xl mx-auto font-medium leading-relaxed px-2 sm:px-4">
-              <span className="text-slate-800 dark:text-slate-200 font-bold">Transform your college experience.</span>
-              {' '}Explore workshops, compete in hackathons, attend tech fests, and
-              <span className="bg-gradient-to-r from-[#FF8040] to-[#0046FF] bg-clip-text text-transparent font-bold"> build skills that matter</span> — your journey to excellence starts here!
+              <span className="text-slate-800 dark:text-slate-200 font-bold">
+                Explore college events, workshops, hackathons, and tech fests at SVSU.
+              </span>
+              {' '}Register for exciting campus activities, connect with talented students, and
+              <span className="bg-gradient-to-r from-[#FF8040] to-[#0046FF] bg-clip-text text-transparent font-bold">
+                {' '}build skills that matter
+              </span>
+              {' '}through innovation, competition, and real-world experiences.
             </p>
 
             {/* Guest CTA */}
@@ -885,23 +894,27 @@ const Home = () => {
               <h4 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4 text-[#0046FF]">Connect With Us</h4>
               <div className="flex gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
                 {[
-                  { Icon: Twitter,  bg: 'hover:bg-blue-500',  label: 'Twitter' },
-                  { Icon: Linkedin, bg: 'hover:bg-blue-600',  label: 'LinkedIn' },
-                  { Icon: Github,   bg: 'hover:bg-slate-700', label: 'GitHub' },
-                  { Icon: Mail,     bg: 'hover:bg-[#FF8040]', label: 'Email' },
-                ].map(({ Icon, bg, label }, i) => (
-                  <a key={i} href="#" aria-label={label}
+                  { Icon: Twitter,  bg: 'hover:bg-blue-500',  label: 'Twitter',  href: '#' },
+                  { Icon: Linkedin, bg: 'hover:bg-blue-600',  label: 'LinkedIn', href: 'https://www.linkedin.com/search/results/all/?keywords=shri%20vishwakarma%20skill%20university%2C%20haryana&origin=RICH_QUERY_SUGGESTION&spellCorrectionEnabled=false&heroEntityKey=urn%3Ali%3Aorganization%3A14598610&position=1' },
+                  { Icon: Youtube,  bg: 'hover:bg-red-600',   label: 'YouTube',  href: 'https://www.youtube.com/@ShriVishwakarmaSkillUniversity' },
+                  { Icon: Mail,     bg: 'hover:bg-[#FF8040]', label: 'Email',    href: 'mailto:info@svsu.ac.in' },
+                ].map(({ Icon, bg, label, href }, i) => (
+                  <a key={i} href={href} target={href.startsWith('mailto') ? '_self' : '_blank'} rel="noopener noreferrer" aria-label={label}
                     className={`social-icon p-2.5 sm:p-3 md:p-3.5 rounded-xl bg-slate-900 ${bg} group`}>
                     <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-slate-400 group-hover:text-white transition-colors duration-150" />
                   </a>
                 ))}
               </div>
-              <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
-                <strong className="text-slate-400">Email:</strong> info@svsu.ac.in<br />
-                <strong className="text-slate-400">Phone:</strong> 18001800147
-              </p>
+              <address className="not-italic text-slate-500 text-xs sm:text-sm leading-relaxed">
+                <strong className="text-slate-400">University:</strong> Shri Vishwakarma Skill University<br />
+                <strong className="text-slate-400">Location:</strong> Palwal, Haryana, India<br />
+                <strong className="text-slate-400">Email:</strong>{' '}
+                <a href="mailto:info@svsu.ac.in" className="hover:text-[#FF8040] transition-colors">info@svsu.ac.in</a><br />
+                <strong className="text-slate-400">Phone:</strong>{' '}
+                <a href="tel:18001800147" className="hover:text-[#FF8040] transition-colors">18001800147</a>
+              </address>
             </div>
-          </div>
+            </div>
 
           {/* Bottom bar */}
           <div className="pt-5 sm:pt-6 md:pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">

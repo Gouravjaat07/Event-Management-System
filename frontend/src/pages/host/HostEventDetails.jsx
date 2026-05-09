@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from "../../context/ThemeContext"; // Add import
-
+import { useTheme } from "../../context/ThemeContext";
 
 import { 
   Calendar, 
@@ -97,7 +96,7 @@ const EventDetails = () => {
                     <motion.div
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        className="w-12 h-12 md:w-16 md:h-16 border-3 md:border-4 border-[#FF8040] border-t-transparent rounded-full"
+                        className="w-12 h-12 md:w-16 md:h-16 border-4 border-[#FF8040] border-t-transparent rounded-full"
                     />
                 </div>
             </div>
@@ -155,7 +154,7 @@ const EventDetails = () => {
 
                 <div className="relative container mx-auto px-3 py-4 md:px-4 md:py-6 lg:px-8 lg:py-8 max-w-7xl">
                     
-                    {/* Back Button */}
+                    {/* Back Button — host route */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -174,95 +173,131 @@ const EventDetails = () => {
                         </Link>
                     </motion.div>
 
-                    {/* Hero Banner Section - FIXED: No Overlapping, Proper Layout */}
+                    {/* ═══════════════════════════════════════════════
+                        HERO BANNER — Fixed layout
+                        • Single <img>, no duplication
+                        • Mobile: h-auto (full image, no crop)
+                        • md+: fixed height, object-cover object-top
+                        • Logo + title + description below banner
+                    ════════════════════════════════════════════════ */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="relative overflow-hidden rounded-xl md:rounded-2xl lg:rounded-3xl mb-4 md:mb-6 lg:mb-8"
+                        transition={{ duration: 0.4 }}
+                        className="mb-4 md:mb-6 lg:mb-8"
                     >
-                        {/* Banner Image */}
-                        <div className="relative h-[400px] sm:h-[450px] md:h-96 lg:h-[28rem] bg-gradient-to-br from-[#FF8040] via-[#0046FF] to-[#001BB7]">
+                        {/* Banner image */}
+                        <div className="relative w-full rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden bg-slate-200 dark:bg-slate-800">
+
                             {event.banner?.url ? (
                                 <img
                                     src={event.banner.url}
                                     alt={event.title}
-                                    className="w-full h-full object-cover object-center"
+                                    className="w-full h-auto md:h-[340px] xl:h-[420px] md:object-cover md:object-top"
+                                    style={{ display: 'block' }}
                                 />
                             ) : (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <Calendar className="w-16 md:w-24 lg:w-32 h-16 md:h-24 lg:h-32 text-white/30" />
+                                <div className="w-full flex items-center justify-center bg-gradient-to-br from-[#FF8040] via-[#0046FF] to-[#001BB7] h-48 md:h-[340px]">
+                                    <Calendar className="w-24 h-24 text-white/30" />
                                 </div>
                             )}
-                            
-                            {/* Strong Gradient Overlay for better text visibility */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent" />
-                            
-                            {/* Event Type Badge - Top Right */}
+
+                            {/* Event Type Badge — always on image, top right */}
                             <motion.div
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                                 transition={{ delay: 0.2, duration: 0.3 }}
-                                className="absolute top-3 right-3 md:top-4 md:right-4 lg:top-6 lg:right-6 z-20"
+                                className="absolute top-3 right-3 md:top-4 md:right-4 z-10"
                             >
-                                <div className={`px-3 py-1.5 md:px-4 md:py-2 lg:px-6 lg:py-2 rounded-full backdrop-blur-md bg-gradient-to-r ${getEventTypeColor(event.eventType)} shadow-lg`}>
-                                    <span className="text-white font-bold text-[10px] md:text-xs lg:text-sm uppercase tracking-wider flex items-center gap-1.5 md:gap-2">
-                                        <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4" />
+                                <div className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full backdrop-blur-md bg-gradient-to-r ${getEventTypeColor(event.eventType)} shadow-lg`}>
+                                    <span className="text-white font-bold text-[10px] md:text-xs uppercase tracking-wider flex items-center gap-1.5">
+                                        <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                         {event.eventType}
                                     </span>
                                 </div>
                             </motion.div>
+                        </div>
 
-                            {/* Bottom Section - Logo, Title, Description in VERTICAL STACK */}
-                            <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 lg:p-6 z-10">
-                                <div className="flex flex-col gap-3 md:gap-4">
-                                    
-                                    {/* Event Logo - Small and Separate */}
-                                    {event.logo?.url && (
-                                        <motion.div
-                                            initial={{ scale: 0, opacity: 0 }}
-                                            animate={{ scale: 1, opacity: 1 }}
-                                            transition={{ delay: 0.15, duration: 0.3 }}
-                                            className="w-14 h-14 md:w-16 md:h-16 rounded-lg border-2 border-white/90 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 overflow-hidden shadow-2xl"
-                                        >
-                                            <img
-                                                src={event.logo.url}
-                                                alt="Event Logo"
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </motion.div>
-                                    )}
+                        {/* Below-Banner Card — logo, title, meta pills, full description */}
+                        <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-b-xl md:rounded-b-2xl border border-t-0 border-slate-200 dark:border-slate-700 px-4 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6">
 
-                                    {/* Title - Below Logo */}
+                            {/* Logo + Title row */}
+                            <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
+
+                                {/* Logo — full, no crop */}
+                                {event.logo?.url && (
+                                    <motion.div
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        transition={{ delay: 0.15, duration: 0.3 }}
+                                        className="flex-shrink-0 w-14 h-14 md:w-20 md:h-20 rounded-xl border-2 border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 overflow-hidden shadow-md"
+                                    >
+                                        <img
+                                            src={event.logo.url}
+                                            alt="Event Logo"
+                                            className="w-full h-full"
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                    </motion.div>
+                                )}
+
+                                {/* Title + meta pills */}
+                                <div className="flex-1 min-w-0">
                                     <motion.h1
-                                        initial={{ opacity: 0, y: 20 }}
+                                        initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.25, duration: 0.3 }}
-                                        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight drop-shadow-2xl"
+                                        transition={{ delay: 0.2, duration: 0.3 }}
+                                        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white leading-tight mb-1 md:mb-2"
                                     >
                                         {event.title}
                                     </motion.h1>
 
-                                    {/* Description - Below Title */}
-                                    <motion.p
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.3, duration: 0.3 }}
-                                        className="text-white/95 text-sm md:text-base lg:text-lg max-w-3xl line-clamp-3 drop-shadow-lg font-medium leading-relaxed"
-                                    >
-                                        {event.description}
-                                    </motion.p>
+                                    <div className="flex flex-wrap gap-2">
+                                        <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-full">
+                                            <Calendar className="w-3 h-3 text-[#FF8040]" />
+                                            {new Date(event.eventDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                        </span>
+                                        <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-full">
+                                            <Users className="w-3 h-3 text-[#0046FF]" />
+                                            {event.participationType}
+                                        </span>
+                                        {event.participationType === "Team" && event.teamSize && (
+                                            <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2.5 py-1 rounded-full">
+                                                <User className="w-3 h-3 text-[#001BB7]" />
+                                                Team of {event.teamSize}
+                                            </span>
+                                        )}
+                                        {event.registrationDeadline && (
+                                            <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${deadlinePassed ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'}`}>
+                                                <Clock className="w-3 h-3" />
+                                                Deadline: {new Date(event.registrationDeadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
+
+                            {/* Full description — never clipped */}
+                            {event.description && (
+                                <motion.p
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.3, duration: 0.3 }}
+                                    className="text-slate-700 dark:text-slate-300 text-sm md:text-base lg:text-lg leading-relaxed"
+                                >
+                                    {event.description}
+                                </motion.p>
+                            )}
                         </div>
                     </motion.div>
+                    {/* ══ End Hero ══ */}
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                         
-                        {/* Main Content - Left Column */}
+                        {/* Main Content — Left Column */}
                         <div className="lg:col-span-2 space-y-3 md:space-y-4 lg:space-y-6">
                             
-                            {/* Quick Info Cards - Fully Responsive */}
+                            {/* Quick Info Cards */}
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -304,7 +339,7 @@ const EventDetails = () => {
                                 </div>
                             </motion.div>
 
-                            {/* Rules Section - Responsive */}
+                            {/* Rules Section */}
                             {event.rules && event.rules.length > 0 && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -332,7 +367,7 @@ const EventDetails = () => {
                                 </motion.div>
                             )}
 
-                            {/* Perks Section - Responsive */}
+                            {/* Perks Section */}
                             {event.perks && event.perks.length > 0 && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -360,7 +395,7 @@ const EventDetails = () => {
                                 </motion.div>
                             )}
 
-                            {/* Legal Notice - Responsive */}
+                            {/* Legal Notice */}
                             {event.legalNotice && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -379,7 +414,7 @@ const EventDetails = () => {
                             )}
                         </div>
 
-                        {/* Sidebar - Right Column - Fully Responsive */}
+                        {/* Sidebar — Right Column */}
                         <div className="space-y-3 md:space-y-4 lg:space-y-6">
                             
                             {/* Registration Card */}
@@ -481,7 +516,7 @@ const EventDetails = () => {
                 </div>
             </div>
 
-            {/* Registration Form Modal - Responsive */}
+            {/* Registration Form Modal */}
             <AnimatePresence>
                 {showForm && (
                     <motion.div

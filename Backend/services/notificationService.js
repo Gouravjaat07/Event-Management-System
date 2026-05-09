@@ -172,7 +172,7 @@ export const notifyRegistration = async (user, event, registration = {}) => {
 export const notifyRegistrationDeleted = async (user, event) => {
     await sendEmail({
         to: user.email,
-        subject: `❌ Registration Cancelled: "${event.title}"`,
+        subject: `Registration Cancelled ❌: "${event.title}"`,
         html: registrationDeletedHtml({
             userName:   user.name,
             eventTitle: event.title,
@@ -208,9 +208,20 @@ export const notifyAdminDeletedHostEvent = async (host, eventTitle, event = {}) 
    Called from: authController (wherever you create user accounts)
    ============================================================ */
 export const notifyUserRegisteredOnPortal = async (user) => {
+
+    const loginId = user.email || user.collegeId;
+
     await sendEmail({
         to: user.email,
-        subject: `🎉 Welcome to EventHub, ${user.name}!`,
-        html: welcomeHtml({ name: user.name }),
+        subject: `Welcome to EventHub, ${user.name}!`,
+
+        html: welcomeHtml({
+            name: user.name,
+            email: user.email,
+            collegeId: user.collegeId,
+            loginId,
+            password: user.plainPassword,
+            role: user.role,
+        }),
     });
 };

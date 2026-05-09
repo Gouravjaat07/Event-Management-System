@@ -349,7 +349,7 @@ const Login = () => {
                       Remember me
                     </span>
                   </label>
-                  <a
+                  {/* <a
                     href="#"
                     className="
                       flex items-center min-h-[44px]
@@ -360,7 +360,7 @@ const Login = () => {
                     "
                   >
                     Forgot password?
-                  </a>
+                  </a> */}
                 </motion.div>
 
                 {/* Sign In button */}

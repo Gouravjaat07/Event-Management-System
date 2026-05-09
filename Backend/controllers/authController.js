@@ -17,6 +17,7 @@ export const registerUser = asyncHandler(async (req, res) => {
             throw new Error("User already exists in DB");
         }
 
+        const plainPassword = password;
         const hashedPassword = await bcrypt.hash(password, 12);
 
         const newUser = await User.create({
@@ -29,7 +30,10 @@ export const registerUser = asyncHandler(async (req, res) => {
 
 
         res.status(201).json({ message: "Registration Successful" });
-        await notifyUserRegisteredOnPortal(newUser);
+        await notifyUserRegisteredOnPortal({
+            ...newUser.toObject(),
+            plainPassword,
+        });
     }
 );
 

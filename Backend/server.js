@@ -7,6 +7,7 @@ import rateLimit from "express-rate-limit";
 import compression from "compression";
 import passport from "passport";
 import path from "path";
+import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
 import "./config/passport.js";
@@ -43,6 +44,9 @@ app.use(cors({
 }));
 app.use(compression());
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Rate Limit
 app.use(
     rateLimit({
@@ -56,6 +60,7 @@ app.use("/certificates", express.static(path.join(process.cwd(), "certificates")
 
 app.use(express.json());
 app.use(passport.initialize());
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // Routes
 app.use("/api/auth", authRoutes);
