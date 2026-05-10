@@ -19,6 +19,9 @@ export const createEvent = asyncHandler(async (req, res) => {
     const today = new Date();
     const deadline = new Date(req.body.registrationDeadline);
 
+    // ✅ Deadline = end of selected day
+    deadline.setHours(23, 59, 59, 999);
+
     let status = "upcoming";
     if (today > deadline) status = "expired";
 
@@ -123,6 +126,9 @@ export const updateEvent = asyncHandler(async (req, res) => {
     const today = new Date();
     const deadline = new Date(event.registrationDeadline);
 
+    // ✅ Deadline = end of selected day
+    deadline.setHours(23, 59, 59, 999);
+
     event.status = today > deadline ? "expired" : "upcoming";
 
     await event.save();
@@ -161,7 +167,6 @@ export const deleteEvent = asyncHandler(async (req, res) => {
         await notifyHostEventDeleted(host, deletedEvent.title);
     }
 
-    await notifyHostEventDeleted(host, deletedEvent.title);
     await deletedEvent.deleteOne();
 
     res.json({ message: "Event deleted successfully" });
