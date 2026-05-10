@@ -122,7 +122,13 @@ const EventDetails = () => {
         );
     }
 
-    const deadlinePassed = event.registrationDeadline && new Date() > new Date(event.registrationDeadline);
+    const deadline = new Date(event.registrationDeadline);
+
+    // ✅ End of selected day
+    deadline.setHours(23, 59, 59, 999);
+
+    const deadlinePassed =
+        event.registrationDeadline && new Date() > deadline;
     const isAlreadyRegistered = registeredEventIds.includes(event._id);
 
     const getEventTypeColor = (type) => {
